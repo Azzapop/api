@@ -4,3 +4,7 @@ shards:
     git: https://github.com/luislavena/radix.git
     version: 0.3.9
 
+  spectator:
+    git: https://gitlab.com/arctic-fox/spectator.git
+    version: 0.9.22
+

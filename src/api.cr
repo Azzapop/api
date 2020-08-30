@@ -1,5 +1,5 @@
 require "http/server"
-require "router"
+require "./routes"
 require "./controllers/*"
 
 module Api
@@ -7,7 +7,7 @@ module Api
 
   VERSION = "0.1.0"
 
-  server = HTTP::Server.new([Routes::Router.instance])
+  server = HTTP::Server.new([Routes::Router.new])
 
   address = server.bind_tcp 8080
   puts "Listening on http://#{address}"

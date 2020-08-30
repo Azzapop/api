@@ -8,6 +8,10 @@ dependencies:
   radix:
     github: luislavena/radix
 
+development_dependencies:
+  spectator:
+    gitlab: arctic-fox/spectator
+
 targets:
   api:
     main: src/api.cr
