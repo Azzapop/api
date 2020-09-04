@@ -1,8 +1,8 @@
 require "../spec_helper"
 
-# These specs will fail to compile if the Routes module doesn't define the
-# HTTP verbs as methods in the Api::Routes module
-module Specs::HouseControllerExample
+# These specs will fail to compile if the HTTP verbs are not defined as methods in the
+# Api::Routes module
+module HouseControllerExampleSpec
   extend Api::Routes
 
   get("/houses") { |req, res, params| res.print("get") }
@@ -37,7 +37,7 @@ Spectator.describe Api::Routes::Router do
   describe "self.add_route" do
     it "adds the route to the routes" do
       route = described_class.build_route("get", "/houses/patios")
-      block = capture_action { |req, res, param| "get all patios" }
+      block = capture_action { |req, res, param| res.print("get all patios") }
       described_class.add_route(route, block)
 
       result = described_class.find_route(route)
@@ -49,7 +49,7 @@ Spectator.describe Api::Routes::Router do
   describe "self.find_route" do
     it "finds the route" do
       route = described_class.build_route("get", "/houses/:id/garage")
-      block = capture_action { |req, res, params| "house #{params["id"]} garage" }
+      block = capture_action { |req, res, params| res.print("house #{params["id"]} garage") }
       described_class.add_route(route, block)
 
       result = described_class.find_route("GET/houses/1/garage")
@@ -61,9 +61,9 @@ Spectator.describe Api::Routes::Router do
 
   context "inherits from HTTP::Handler" do
     server = HTTP::Server.new(described_class.new)
-    before_all { spawn { server.listen(8080) } }
+    before_all { spawn { server.listen(LOCAL_TEST_PORT) } }
     after_all { server.close }
-    let(client) { HTTP::Client.new("localhost", 8080) }
+    let(client) { HTTP::Client.new("localhost", LOCAL_TEST_PORT) }
 
     it "handles a GET request" do
       response = client.get("/houses")
@@ -71,7 +71,7 @@ Spectator.describe Api::Routes::Router do
       expect(response.body).to eq("get")
     end
 
-    it "hanles a HEAD request" do
+    it "handles a HEAD request" do
       response = client.head("/houses")
       expect(response.status).to be_ok
       expect(response.headers["head"]).to eq("head")

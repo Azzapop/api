@@ -1,6 +1,5 @@
 require "http/server/handler"
 require "radix"
-require "./util/singleton"
 
 module Api
   module Routes

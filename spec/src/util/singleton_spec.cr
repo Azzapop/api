@@ -13,6 +13,8 @@ Spectator.describe Singleton do
     expect(House::INSTANCE).to be_a(House)
   end
 
+  # TODO implement this spec when the new method on the singleton module can check for existing
+  # instances
   pending "should not allow a new instance to be created in included classes" do
     expect_raises(Singleton::SingletonException) { House.new_house }
   end
