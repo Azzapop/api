@@ -60,67 +60,80 @@ Spectator.describe Api::Routes::Router do
   end
 
   context "inherits from HTTP::Handler" do
-    server = HTTP::Server.new(described_class.new)
-    before_all { spawn { server.listen(LOCAL_TEST_PORT) } }
-    after_all { server.close }
-    let(client) { HTTP::Client.new("localhost", LOCAL_TEST_PORT) }
+    let(handler) { described_class.new }
+
+    # Build a response that would be received from the client to avoid creating and calling a server
+    def client_response(method, route)
+      io = IO::Memory.new
+      request = HTTP::Request.new(method, route)
+      response = HTTP::Server::Response.new(io)
+      context = HTTP::Server::Context.new(request, response)
+
+      # This spec context is testing that the Router handles the server context correctly in the
+      # call method and checks the expected responses
+      handler.call(context)
+
+      response.close
+      io.rewind
+      HTTP::Client::Response.from_io(io)
+    end
 
     it "handles a GET request" do
-      response = client.get("/houses")
+      response = client_response("GET", "/houses")
       expect(response.status).to be_ok
       expect(response.body).to eq("get")
     end
 
     it "handles a HEAD request" do
-      response = client.head("/houses")
+      response = client_response("HEAD", "/houses")
       expect(response.status).to be_ok
       expect(response.headers["head"]).to eq("head")
     end
 
     it "handles a POST request" do
-      response = client.post("/house")
+      response = client_response("POST", "/house")
       expect(response.status).to be_ok
       expect(response.body).to eq("post")
     end
 
     it "handles a PUT request" do
-      response = client.put("/house/1")
+      response = client_response("PUT", "/house/1")
       expect(response.status).to be_ok
       expect(response.body).to eq("put 1")
     end
 
     it "handles a DELETE request" do
-      response = client.delete("/house/1")
+      response = client_response("DELETE", "/house/1")
       expect(response.status).to be_ok
       expect(response.body).to eq("delete 1")
     end
 
     it "handles a CONNECT request" do
-      response = client.exec("connect", "/houses")
+      response = client_response("CONNECT", "/houses")
       expect(response.status).to be_ok
       expect(response.body).to eq("connect")
     end
 
     it "handles an OPTIONS request" do
-      response = client.options("/houses/options")
+      response = client_response("OPTIONS", "/houses/options")
       expect(response.status).to be_ok
       expect(response.body).to eq("options")
     end
 
     it "handles a TRACE request" do
-      response = client.exec("trace", "/houses")
+      response = client_response("TRACE", "/houses")
       expect(response.status).to be_ok
       expect(response.body).to eq("trace")
     end
 
     it "handles a PATCH request" do
-      response = client.patch("/house/1")
+      response = client_response("PATCH", "/house/1")
       expect(response.status).to be_ok
       expect(response.body).to eq("patch 1")
     end
 
     it "fails at an unknown endpoint" do
-      response = client.get("/sfghkjghkvbagk")
+      response = client_response("GET", "/sfghkjghkvbagk")
       expect(response.status).to be_not_found
     end
   end
