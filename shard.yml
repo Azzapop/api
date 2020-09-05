@@ -4,6 +4,14 @@ version: 0.1.0
 authors:
   - your-name-here <your-email-here>
 
+dependencies:
+  radix:
+    github: luislavena/radix
+
+development_dependencies:
+  spectator:
+    gitlab: arctic-fox/spectator
+
 targets:
   api:
     main: src/api.cr

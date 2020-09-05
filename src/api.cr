@@ -1,6 +1,12 @@
-# TODO: Write documentation for `Api`
-module Api
-  VERSION = "0.1.0"
+require "./version"
+require "./controllers/*"
 
-  # TODO: Put your code here
+module Api
+  include Folder
+
+  server = HTTP::Server.new([Routes::Router.new])
+
+  address = server.bind_tcp 8080
+  puts "Listening on http://#{address}"
+  server.listen
 end
