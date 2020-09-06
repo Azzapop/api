@@ -1,5 +1,5 @@
 require "../src/routes"
-require "../src/util/singleton"
+require "../src/util/*"
 require "spectator"
 
 Spectator.configure do |config|
