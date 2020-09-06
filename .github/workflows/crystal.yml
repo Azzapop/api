@@ -18,5 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: shards install
+    - name: Touch config
+      run: touch config.yml
     - name: Run tests
       run: crystal spec
