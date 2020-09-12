@@ -1,1 +1,19 @@
 port: 8080
+database:
+  default: &default
+    host: localhost
+    user: username
+    password: password
+    adapter: mysql
+
+  development:
+    <<: *default
+    db: abhook_api_db_dev
+
+  test:
+    <<: *default
+    db: abhook_api_db_test
+
+  production:
+    <<: *default
+    db: abhook_api_db_prod

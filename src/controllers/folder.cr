@@ -1,21 +1,26 @@
 require "../routes"
+require "../models/folder"
 
 module Api
-  module Folder
+  module FolderController
     extend Routes
 
-    get("/folders") do |req, res, param|
-      puts "folders"
-      puts req.inspect
-      puts res.inspect
+    post("/folder") do |req, res, param|
       res.content_type = "text/plain"
-      res.print "folders"
+      # TODO form parser to hash
+      HTTP::FormData.parse(req) do |part|
+        if part.name == "name"
+          folder = Folder.create(name: part.body.gets_to_end)
+          res.print "folder id: #{folder.id}"
+          next
+        end
+      end
     end
 
     get("/folder/:id") do |req, res, param|
-      puts req.inspect
+      folder = Folder.find(param["id"])
       res.content_type = "text/plain"
-      res.print param["id"]
+      res.print folder.inspect
     end
   end
 end
