@@ -1,18 +1,24 @@
 # api
 
-TODO: Write a description here
+api app, used as backend for projects
 
 ## Installation
 
-TODO: Write installation instructions here
+`shards install`
 
 ## Usage
 
-TODO: Write usage instructions here
+TODO
+
+## sam.cr
+
+Development tasks can be found under `crystal sam.cr help`
 
 ## Development
 
-TODO: Write development instructions here
+Start development server with `crystal src/api.cr`
+
+Run specs with `crystal spec`
 
 ## Contributing
 
