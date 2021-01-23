@@ -10,11 +10,8 @@ dependencies:
   mysql:
     github: crystal-lang/crystal-mysql
   jennifer:
-    # TODO update jennifer to 0.9.1 when it is released,
-    # https://github.com/imdrasil/jennifer.cr/issues/326
     github: imdrasil/jennifer.cr
-    branch: master
-    # version: "~> 0.9.0"
+    version: 0.10.0
   sam:
     github: imdrasil/sam.cr
     version: 0.4.0

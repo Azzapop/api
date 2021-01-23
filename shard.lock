@@ -18,7 +18,7 @@ shards:
 
   jennifer:
     git: https://github.com/imdrasil/jennifer.cr.git
-    version: 0.9.0+git.commit.4a9d552a96d08c3116f0e2d91d5a16e7a3fb9e76
+    version: 0.10.0
 
   mysql:
     git: https://github.com/crystal-lang/crystal-mysql.git
