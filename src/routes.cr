@@ -1,5 +1,6 @@
 require "http/server/handler"
 require "radix"
+require "./util/capture"
 
 module Api
   module Routes
@@ -10,9 +11,15 @@ module Api
     HTTP_VERBS = %w(get head post put delete connect options trace patch)
 
     {% for verb in HTTP_VERBS %}
-      def {{ verb.id }}(path : String, &block : Action) : Nil
-        route = Router.build_route({{ verb }}, path)
-        Router.add_route(route, block)
+      macro {{ verb.id }}(path, controller, action)
+        action = Capture(Action).block do |req, res, param|
+          # TODO need a better name here
+          controller = \{{ controller.id }}.new(req, res, param)
+          controller.\{{ action.id }}
+          controller.\{{ action.id }}_response
+        end
+        route = Router.build_route({{ verb }}, \{{path}})
+        Router.add_route(route, action)
       end
     {% end %}
 
@@ -22,7 +29,7 @@ module Api
       private ROUTES = Routes.new
 
       def self.build_route(method : String, path : String) : String
-        File.join([method.upcase].concat(path.split('/').reject!("")))
+        File.join(['/', method.upcase].concat(path.split('/').reject!("")))
       end
 
       def self.add_route(route : String, action : Action) : Nil

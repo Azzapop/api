@@ -5,18 +5,22 @@ authors:
   - your-name-here <your-email-here>
 
 dependencies:
-  radix:
-    github: luislavena/radix
-  mysql:
-    github: crystal-lang/crystal-mysql
   jennifer:
     github: imdrasil/jennifer.cr
-    version: 0.10.0
+    # TODO update to supporting cr version 1.0.0
+    # version: 0.10.0
+    branch: master
+  mysql:
+    github: crystal-lang/crystal-mysql
+    version: 0.13.0
+  radix:
+    github: luislavena/radix
+    version: 0.4.1
+
+development_dependencies:
   sam:
     github: imdrasil/sam.cr
     version: 0.4.0
-
-development_dependencies:
   spectator:
     gitlab: arctic-fox/spectator
 
