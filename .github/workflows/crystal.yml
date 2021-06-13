@@ -32,7 +32,7 @@ jobs:
         apt-get install -y mysql-client
         mysql --host mydb -uroot -p${{ secrets.db_password }} -e "SHOW DATABASES"
     - name: Install dependencies
-      run: shards install
+      run: shards install --ignore-crystal-version
     - uses: 1arp/create-a-file-action@0.2
       with:
         file: 'config.yml'
